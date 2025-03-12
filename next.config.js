@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ["s.gravatar.com"],
   },
+  devIndicators: false
 };
 
 module.exports = nextConfig;

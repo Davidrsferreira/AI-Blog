@@ -3,6 +3,7 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
+import { Logo } from "../logo";
 
 export const AppLayout = ({ children }) => {
   const { user } = useUser();
@@ -10,7 +11,7 @@ export const AppLayout = ({ children }) => {
     <div className="grid grid-cols-[300px_1fr] h-screen max-h-screen">
       <div className="flex flex-col text-white overflow-hidden">
         <div className="bg-slate-500 px-2">
-          <div>logo</div>
+         <Logo />
           <Link
             href="/post/new"
             className="bg-green-500 tracking-wider w-full text-center text-white cursor-poniter uppercase px-4 py-2 rounded-md hovwe:bg-green-600 transition-colors block"
