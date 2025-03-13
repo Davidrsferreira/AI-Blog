@@ -3,7 +3,7 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
-import { Logo } from "../logo";
+import { Logo } from "../Logo";
 
 export const AppLayout = ({ children }) => {
   const { user } = useUser();
@@ -14,7 +14,7 @@ export const AppLayout = ({ children }) => {
          <Logo />
           <Link
             href="/post/new"
-            className="bg-green-500 tracking-wider w-full text-center text-white cursor-poniter uppercase px-4 py-2 rounded-md hovwe:bg-green-600 transition-colors block"
+            className="btn"
           >
             New post
           </Link>
