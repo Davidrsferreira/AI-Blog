@@ -80,7 +80,6 @@ export default withApiAuthRequired(async function handler(req, res) {
     }
   );
 
-  console.log("title:", title);
   const post = await db.collection("posts").insertOne({
     postContent,
     title,
