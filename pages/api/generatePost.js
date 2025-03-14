@@ -67,7 +67,9 @@ export default withApiAuthRequired(async function handler(req, res) {
     response_format: { type: "json_object" },
   });
 
-  const { title, metaData } = JSON.parse(seoResponse.choices[0]?.message?.content || {});
+  const { title, metaData } = JSON.parse(
+    seoResponse.choices[0]?.message?.content || {}
+  );
 
   await db.collection("users").updateOne(
     {
@@ -90,5 +92,5 @@ export default withApiAuthRequired(async function handler(req, res) {
     created: new Date(),
   });
 
-  res.status(200).json({ post: { postContent, title, metaData } });
+  res.status(200).json({ postId: post.insertedId });
 });
