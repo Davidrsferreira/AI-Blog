@@ -3,9 +3,7 @@ import OpenAI from "openai";
 export default async function handler(req, res) {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const model = "gpt-4o-mini-2024-07-18";
-
-  const topic = "dog ownership";
-  const keywords = "puppy training adopting breeds";
+  const { topic, keywords } = req.body;
 
   const response = await client.chat.completions.create({
     model: model,
