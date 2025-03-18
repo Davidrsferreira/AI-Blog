@@ -2,27 +2,15 @@ import { withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { AppLayout } from "../components/appLayout/AppLayout";
 import { getAppProps } from "../utils/getAppProps";
 
-export default function TokenPopup() {
-  const handleClick = async () => {
-    const result = await fetch("/api/addTokens", {
-      method: "POST",
-    });
-
-    const data = await result.json();
-    window.location.replace(data.session.url);
-  };
-
+export default function Success() {
   return (
     <div>
-      <h1>Token popup page</h1>
-      <button className="btn" onClick={handleClick}>
-        Add Tokens
-      </button>
+      <h1>Thank you for your purchase!</h1>
     </div>
   );
 }
 
-TokenPopup.getLayout = function getLayout(page, pageProps) {
+Success.getLayout = function getLayout(page, pageProps) {
   return <AppLayout {...pageProps}>{page}</AppLayout>;
 };
 
