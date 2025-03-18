@@ -2,11 +2,38 @@ import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { AppLayout } from "../../components/appLayout/AppLayout";
 import clientPromise from "../../lib/mongodb";
 import { ObjectId } from "mongodb";
+import Markdown from "react-markdown";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHashtag } from "@fortawesome/free-solid-svg-icons";
+import { getAppProps } from "../../utils/getAppProps";
 
 export default function Post(props) {
   return (
-    <div>
-      <h1>Post page</h1>
+    <div className="overflow-auto h-full">
+      <div className="max-w-screen-sm mx-auto">
+        <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+          SEO title and meta description
+        </div>
+        <div className="p-4 my-2 border border-stone-200 rounded-md">
+          <div className="text-blue-600 text-2xl font-bold">{props.title}</div>
+          <div className="mt-2">{props.metaData}</div>
+        </div>
+        <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+          Keywords
+        </div>
+        <div className="flex flex-wrap pt-2 gap-1">
+          {props.keywords.split(",").map((keyword, i) => (
+            <div key={i} className="p-2 rounded-full bg-slate-800 text-white">
+              <FontAwesomeIcon icon={faHashtag} />
+              {keyword}
+            </div>
+          ))}
+        </div>
+        <div className="text-sm font-bold mt-6 p-2 bg-stone-200 rounded-sm">
+          Blog Post
+        </div>
+        <Markdown>{props.postContent || ""}</Markdown>
+      </div>
     </div>
   );
 }
@@ -17,6 +44,7 @@ Post.getLayout = function getLayout(page, pageProps) {
 
 export const getServerSideProps = withPageAuthRequired({
   async getServerSideProps(ctx) {
+    const props = await getAppProps(ctx);
     const userSession = await getSession(ctx.req, ctx.res);
     const client = await clientPromise;
     const db = client.db("blog-ai");
@@ -43,6 +71,7 @@ export const getServerSideProps = withPageAuthRequired({
         title: post.title,
         metaData: post.metaData,
         keywords: post.keywords,
+        ...props
       },
     };
   },
