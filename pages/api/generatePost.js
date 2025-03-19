@@ -20,6 +20,16 @@ export default withApiAuthRequired(async function handler(req, res) {
   const model = "gpt-4o-mini-2024-07-18";
   const { topic, keywords } = req.body;
 
+  if (!topic || !keywords) {
+    res.status(422).json({ error: "Missing required fields" });
+    return;
+  }
+
+  if (!topic.length > 100 || !keywords.length > 100) {
+    res.status(422).json({ error: "Fields are too long" });
+    return;
+  }
+
   const response = await openAi.chat.completions.create({
     model: model,
     messages: [
