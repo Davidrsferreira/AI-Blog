@@ -1,34 +1,51 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useReducer, useState } from "react";
 
 const PostContext = React.createContext();
 
 export default PostContext;
 
-export const PostProvider = ({ children }) => {
-  const [posts, setPost] = useState([]);
-  const [noMorePosts, setNoMorePosts] = useState(false);
-
-  const deletePost = useCallback((postId) => {
-    setPost((value) => {
-      const newPosts = [];
-      value.forEach((post) => {
-        if (post._id !== postId) {
-          newPosts.push(post);
-        }
-      });
-      return newPosts;
-    });
-  }, []);
-
-  const setPostsFromSSR = useCallback((postsFromSSR = []) => {
-    setPost((value) => {
-      const newPosts = [...value];
-      postsFromSSR.forEach((post) => {
+function postReducer(state, action) {
+  switch (action.type) {
+    case "addPosts": {
+      const newPosts = [...state];
+      action.posts.forEach((post) => {
         if (!newPosts.find((p) => p._id === post._id)) {
           newPosts.push(post);
         }
       });
       return newPosts;
+    }
+
+    case "deletePost": {
+      const newPosts = [];
+      state.forEach((post) => {
+        if (post._id !== action.postId) {
+          newPosts.push(post);
+        }
+      });
+      return newPosts;
+    }
+
+    default:
+      return state;
+  }
+}
+
+export const PostProvider = ({ children }) => {
+  const [posts, dispatch] = useReducer(postReducer, []);
+  const [noMorePosts, setNoMorePosts] = useState(false);
+
+  const deletePost = useCallback((postId) => {
+    dispatch({
+      type: "deletePost",
+      postId,
+    });
+  }, []);
+
+  const setPostsFromSSR = useCallback((postsFromSSR = []) => {
+    dispatch({
+      type: "addPosts",
+      posts: postsFromSSR,
     });
   }, []);
 
@@ -47,14 +64,9 @@ export const PostProvider = ({ children }) => {
         setNoMorePosts(true);
       }
 
-      setPost((value) => {
-        const newPosts = [...value];
-        postsResult.forEach((post) => {
-          if (!newPosts.find((p) => p._id === post._id)) {
-            newPosts.push(post);
-          }
-        });
-        return newPosts;
+      dispatch({
+        type: "addPosts",
+        posts: postsResult,
       });
     },
     []
