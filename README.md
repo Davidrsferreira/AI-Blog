@@ -49,8 +49,8 @@ To run this project locally, follow these steps:
 
 3. **Set up environment variables**:
 
-   ```plaintext
    Create a .env.local file in the root directory and add the following variables:
+   ```plaintext
    MONGODB_URI=your_mongodb_connection_string
    OPENAI_API_KEY=your_openai_api_key
    AUTH0_SECRET=your_auth0_secret
