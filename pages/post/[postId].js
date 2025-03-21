@@ -71,6 +71,7 @@ export const getServerSideProps = withPageAuthRequired({
         title: post.title,
         metaData: post.metaData,
         keywords: post.keywords,
+        postCreated: post.created.toString(),
         ...props
       },
     };
